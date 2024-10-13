@@ -2,14 +2,6 @@ Flask==2.2.5
 inflection==0.5.1
 numpy==1.26.4
 pandas==2.2.2
-pytest==7.4.4
-python-apt==0.0.0
-python-box==7.2.0
-python-dateutil==2.8.2
-python-louvain==0.16
-python-slugify==8.0.4
-python-utils==3.9.0
-scikit-image==0.24.0
 scikit-learn==1.5.2
 scipy==1.13.1
 sklearn-pandas==2.2.0
