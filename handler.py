@@ -5,7 +5,8 @@ from flask import Flask, request, Response
 from rossmann.Rossmann import Rossmann
 
 #loading model
-model = pickle.load( open( 'model/xgb_model_tunned.pkl', 'rb') )
+with open('model/xgb_model_tunned.pkl', 'rb') as file:
+  model = pickle.load(file)
 
 app = Flask( __name__ )
 
