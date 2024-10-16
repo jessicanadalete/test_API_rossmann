@@ -8,7 +8,7 @@ import datetime
 
 class Rossmann( object ):
   def __init__( self ):
-    self.home_path = ''
+    self.home_path = '/opt/render/project/src/parameter/'
     self.competition_distance_scaler   = pickle.load( open( self.home_path + 'competition_distance_scaler.pkl', 'rb') )
     self.competition_time_month_scaler = pickle.load( open( self.home_path + 'competition_time_month_scaler.pkl', 'rb') )
     self.promo_time_week_scaler        = pickle.load( open( self.home_path + 'promo_time_week_scaler.pkl', 'rb') )
@@ -34,11 +34,12 @@ class Rossmann( object ):
     df1['date'] = pd.to_datetime(df1['date'])
 
     ###2.5 Fillout NA
+  
+    #-> considering that NA is when the store doesnt have any competidor near, we'll input a bigger distance then max distance in the data
     df1['competition_distance'] = df1['competition_distance'].apply(lambda x: 200000.0 if math.isnan(x) else x)
 
     #competition_open_since_month and year = year and month of the time the nearest competidor was opened
     #->assumption: considering the same date of the sale
-    #obs: here Im using more than one column of my dataframe
     df1['competition_open_since_month'] = df1.apply(lambda x: x['date'].month if math.isnan(x['competition_open_since_month']) else x['competition_open_since_month'], axis=1)
     df1['competition_open_since_year'] = df1.apply(lambda x: x['date'].year if math.isnan(x['competition_open_since_year']) else x['competition_open_since_year'], axis=1)
 
@@ -109,13 +110,13 @@ class Rossmann( object ):
 
     ###3.5 Column Selection
     # removing column 'costumer' - because we dont know the number of future constumers, column 'open' - because it dont give useful information and another support columns
-    cols_drop = ['customers', 'open', 'promo_interval', 'month_map']
+    cols_drop = [ 'open', 'promo_interval', 'month_map']
     df2 = df2.drop(cols_drop, axis=1)
 
     return df2
 
   def data_preparation( self, df5 ):
-
+    ###5.2 Rescaling
     #competition_distante
     df5['competition_distance'] = self.competition_distance_scaler.fit_transform( df5[['competition_distance']].values )
 
@@ -138,9 +139,6 @@ class Rossmann( object ):
     # assortment - Ordinal Encoding
     assortment_dict = {'basic': 1, 'extra': 2, 'extended': 3}
     df5['assortment'] = df5['assortment'].map( assortment_dict )
-
-    ###5.2.2 Response Variable Transformation
-    df5['sales'] = np.log1p( df5['sales'] )
 
     ###5.2.3 Nature Transformation
 
