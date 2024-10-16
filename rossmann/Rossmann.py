@@ -34,10 +34,6 @@ class Rossmann( object ):
     df1['date'] = pd.to_datetime(df1['date'])
 
     ###2.5 Fillout NA
-    df1['competition_distance'].max()
-    #competition distance = distance in meters to the nearest competidor store
-    #-> considering that NA is when the store doesnt have any competidor near, we'll input a bigger distance then max distance in the data
-    # here Im using only one column
     df1['competition_distance'] = df1['competition_distance'].apply(lambda x: 200000.0 if math.isnan(x) else x)
 
     #competition_open_since_month and year = year and month of the time the nearest competidor was opened
