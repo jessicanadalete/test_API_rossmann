@@ -110,7 +110,7 @@ class Rossmann( object ):
 
     ###3.5 Column Selection
     # removing column 'costumer' - because we dont know the number of future constumers, column 'open' - because it dont give useful information and another support columns
-    cols_drop = ['customers', 'open', 'promo_interval', 'month_map']
+    cols_drop = [ 'open', 'promo_interval', 'month_map']
     df2 = df2.drop(cols_drop, axis=1)
 
     return df2
